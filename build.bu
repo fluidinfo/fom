@@ -1,0 +1,36 @@
+
+!opt ve=ve
+!opt vebin="{{ ve }}/bin"
+!opt pip="$vebin/pip install"
+
+ve.new:
+    virtualenv --no-site-packages {{ ve }}
+    {{ pip }} .
+
+ve.install deps=ve.new:
+    {{ pip }} sphinx
+    {{ pip }} sphinx-pypi-upload
+    {{ pip }} requests 
+    {{ pip }} py
+    {{ pip }} pytest-xdist
+    {{ pip }} --no-deps -U .
+
+doc.clean:
+    rm -rf build/sphinx
+
+doc.build deps=ve.install,doc.clean:
+    {{ vebin }}/sphinx-build docs build/sphinx
+
+doc.upload deps=doc.build:
+    {{ vebin }}/python setup.py upload_sphinx
+
+doc deps=doc.build,doc.upload:
+    echo "Tada!"
+
+test deps=ve.install:
+    {{ vebin }}/py.test -n8
+
+release:
+    python setup.py sdist --formats=gztar,zip,bztar upload
+
+

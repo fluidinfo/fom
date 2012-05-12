@@ -1,0 +1,9 @@
+include *.txt
+include *.vel
+recursive-include bin *
+recursive-include tests *.py
+recursive-include examples *.py *.html
+recursive-include docs *.py *.rst *.css *.png
+recursive-include fom *.py
+prune docs/build
+

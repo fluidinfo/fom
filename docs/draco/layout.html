@@ -1,0 +1,44 @@
+
+{# extending the basic template layout #}
+{% extends "basic/layout.html" %}
+
+{% block extrahead %}
+    <link href='http://fonts.googleapis.com/css?family=OFL+Sorts+Mill+Goudy+TT' rel='stylesheet' type='text/css'>
+    <link href=' http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+{% endblock %}
+
+{% macro ribbon() %}
+    <div class="ribbon">
+        <div>
+        <a href="http://bitbucket.org/{{ theme_bitbucket_project }}">
+            <img src="_static/bblogo.png" />
+        </a>
+        </div>
+        <div>
+        <a href="http://bitbucket.org/{{ theme_bitbucket_project }}/src">
+            source
+        </a>|
+        <a href="http://bitbucket.org/{{ theme_bitbucket_project }}/issues">
+            issues
+        </a>
+        </div>
+    </div>
+{% endmacro %}
+
+{# appears before the document #}
+{% block header %}
+
+    <div class="banner">
+        <a href="{{ pathto(master_doc) }}">
+        <img src="{{ pathto('_static/' + logo, 1) }}" alt="{{ project }} logo"></img>
+        <h1>{{ project }} </h1>
+        </a>
+        <div>{{ theme_tagline }}</div>
+    </div>
+{% endblock %}
+
+{#
+vim: ft=htmljinja
+#}
+
