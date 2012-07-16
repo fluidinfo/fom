@@ -4,7 +4,7 @@
     fom.errors
     ~~~~~~~~~~
 
-    Exception mechanisms for handlinng failed requests to FluidDB
+    Exception mechanisms for handling failed requests to FluidDB
 
     :copyright: 2009-2010 Fom Authors.
     :license: MIT, see LICENSE for more information.
@@ -19,6 +19,9 @@ class FluidError(Exception):
         Exception.__init__(self, response)
         self.status = response.status
         self.fluid_error = response.error
+        self.request_id = response.request_id
+        # Make sure the erroneous response is easy to get at.
+        self.response = response
 
     def __str__(self):
         return '<%s (%s %s)>' % (self.fluid_error, self.status,
