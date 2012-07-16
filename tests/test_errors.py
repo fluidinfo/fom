@@ -57,6 +57,26 @@ class ErrorTest(unittest.TestCase):
         self.assertRaises(Fluid500Error,
                           self.api.namespaces['test'].delete)
 
+    def testErrorObject(self):
+        """
+        Ensures that the exception object has the correct attributes.
+        """
+        class FakeResponse(object):
+            """
+            Mock class.
+            """
+
+            def __init__(self, status, error, request_id):
+                self.status = status
+                self.error = error
+                self.request_id = request_id
+
+        fake_response = FakeResponse('500', 'Server Error', '12345')
+        err = Fluid500Error(fake_response)
+        self.assertEqual('500', err.status)
+        self.assertEqual('Server Error', err.fluid_error)
+        self.assertEqual('12345', err.request_id)
+        self.assertEqual(fake_response, err.response)
 
 
 if __name__ == '__main__':
