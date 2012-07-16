@@ -9,5 +9,5 @@
     :license: MIT, see LICENSE for more information.
 """
 
-version = '0.9.8'
+version = '0.9.9'
 
