@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+"""
+Will reset the test user on the Sandbox to a good state in terms of policy
+"""
+
+from fom.dev import sandbox_fluid
+
+policies = {
+    "namespaces": ['create', 'update', 'delete'],
+    "tags": ['update', 'delete'],
+    "tag-values": ['create', 'delete']
+}
+
+api = sandbox_fluid()
+for category in policies.keys():
+    for action in policies[category]:
+        update = raw_input("CATEGORY: %s ACTION: %s STATUS: %s UPDATE? (Y/N)" % (category, action, api.db('GET', '/policies/test/%s/%s' % (category, action)).content))
+        if update.lower() == "y":
+            print api.db('PUT', '/policies/test/%s/%s' % (category, action), {'policy': 'open', 'exceptions': ['test']})

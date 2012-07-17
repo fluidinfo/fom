@@ -1,0 +1,76 @@
+#! /usr/bin/env python
+# -*- coding: utf8 -*-
+
+"""
+fdbc
+~~~~
+
+Client script to provide easy shell to FluidDB, that exposes the relevant
+parts of the Fom API.
+
+:copyright: (c) 2010 Fom Authors.
+:license: MIT.
+"""
+
+BANNER = """
+Welcome to the FluidDB client shell
+
+You are connected to %r
+"""
+
+import sys, optparse, logging
+
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger('fdbc')
+
+from fom import Fluid
+from fom.mapping import Object, Tag, Namespace, tag_relation, tag_value
+from fom.dev import sandbox_fluid
+
+try:
+    from bpython.cli import main as bmain
+except ImportError:
+    log.error('Requires bpython. "pip install bpython"')
+    sys.exit(1)
+
+
+def generate_locals(opts):
+    if opts.sandbox:
+        api = sandbox_fluid()
+    else:
+        api = Fluid()
+        api.bind()
+    return dict(
+        Fluid = Fluid,
+        api = api,
+        Object = Object,
+        Tag = Tag,
+        Namespace = Namespace,
+        tag_value = tag_value,
+        tag_relation = tag_relation,
+    )
+
+
+def create_opts():
+    parser = optparse.OptionParser()
+    parser.add_option('-s', '--sandbox',
+        help='Use the sandbox fluid instance. This '
+        'will also log you in as the test account',
+        action='store_true')
+    opts, args = parser.parse_args()
+    return opts, args
+
+
+def main():
+    opts, args = create_opts()
+    locals_=generate_locals(opts)
+    bmain(
+        locals_=generate_locals(opts),
+        banner=BANNER % locals_['api'].db.base_url,
+        args=['-i', '-q']
+    )
+
+
+if __name__ == '__main__':
+    main()
+
