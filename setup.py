@@ -13,6 +13,6 @@ setup(
     url='http://packages.python.org/Fom/',
     packages=['fom'],
     scripts=['bin/fdbc'],
-    install_requires=['requests', 'blinker'],
+    install_requires=['requests==0.14.2', 'blinker'],
 )
 
