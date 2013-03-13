@@ -17,7 +17,7 @@ class SignalsTests(TestCase):
         def on_resp(db, response, called=called):
             called.append(response)
         db = FluidDB('http://sandbox.fluidinfo.com')
-        r = db('GET', ['users', 'aliafshar'])
+        r = db('GET', ['users', 'test'])
         self.assertEqual(len(called), 2)
 
     def test_dummy_signals_cant_connect(self):
